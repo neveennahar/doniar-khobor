@@ -130,3 +130,26 @@ const newsDetails = id => {
 
 }
 
+
+// Loading All Categories
+const loadCategories = () => {
+    toggleSpinner(true);
+    const url = 'https://openapi.programming-hero.com/api/news/categories';
+    fetch(url)
+        .then(res => res.json())
+        .then(data => displayCategories(data.data))
+        .catch(error => alert(error.message))
+}
+
+// Display all categories Data
+const displayCategories = (data) => {
+    const categoriesMenu = document.getElementById('categories-menu')
+    data?.news_category?.map((category) => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+    <span onclick = "loadCategorizedData(this,${category.category_id})" class="category-link cursor-pointer fw-bold"> ${category.category_name}</span>
+        `
+        categoriesMenu.appendChild(div)
+    })
+    toggleSpinner(false)
+}
