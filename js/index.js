@@ -26,3 +26,67 @@ const loadCategorizedData = (element, categoryId) => {
         .then(data => displayCategorizedData(data.data))
         .catch(error => console.log(error.message))
 }
+
+// Display Categorized Data
+const displayCategorizedData = data => {
+
+    data.sort((a, b) => b.total_view - a.total_view)
+
+    console.log(data)
+    if (data.length !== 0) {
+        contentDiv.textContent = '';
+        data.forEach(item => {
+            const div = document.createElement('div');
+            div.classList.add('card', 'mb-3', 'p-4', 'rounded-3')
+            div.innerHTML = `
+            <div class="row align-items-center">
+                <div class="col-md-4 col-lg-3">
+                <img src="${item?.image_url}" style="height:100%" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8 col-lg-9">
+                <div class="card-body">
+                    <h5 class="card-title">${item?.title}</h5>
+                    <p class="card-text text-secondary">${item?.details?.substring(0, 300)}...</p>
+                    <div class="row">
+                    <div class="col-6 col-md-6 col-lg-3 d-flex align-items-center my-2">
+                        <img class="img-fluid rounded-circle" style="height: 48px; width: 48px;"
+                            src="${item?.author?.img || defaultImage}"
+                            alt="">
+                        <div class="ms-2">
+                            <p class="m-0 p-0">${item?.author?.name || 'not found'}</p>
+                            <small class="m-0 p-0">${item?.author?.published_date || 'not found'}</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-3 fs-5 my-2 text-secondary">
+                        <i class="fa fa-eye"></i>
+                        <span>${item?.total_view || 'not found'}</span>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-3 fs-5 my-2">
+                        <i class="fa-solid fa-star text-secondary"></i>
+                        <i class="fa-regular fa-star text-secondary"></i>
+                        <i class="fa-regular fa-star text-secondary"></i>
+                        <i class="fa-regular fa-star text-secondary"></i>
+                        <i class="fa-regular fa-star text-secondary"></i>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-3 fs-5 my-2">
+                    <p class="cursor-pointer text-primary" onclick="newsDetails('${item?._id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Details
+                    <i class="fa-solid fa-arrow-right"></i>
+                    </p>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+            contentDiv.appendChild(div)
+        })
+
+        toggleSpinner(false)
+    } else {
+        contentDiv.innerHTML = '<h1 class="py-3 text-center">No Data Found</h1>'
+        toggleSpinner(false)
+    }
+
+}
