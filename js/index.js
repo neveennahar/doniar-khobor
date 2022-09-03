@@ -153,3 +153,7 @@ const displayCategories = (data) => {
     })
     toggleSpinner(false)
 }
+
+
+// Call Loading all categories Function
+loadCategories()
