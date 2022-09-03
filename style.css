@@ -1,0 +1,7 @@
+.cursor-pointer {
+    cursor: pointer;
+}
+
+#content-area {
+    min-height: 50vh;
+}
