@@ -90,3 +90,43 @@ const displayCategorizedData = data => {
     }
 
 }
+
+// Single News Details
+const newsDetails = id => {
+    const url = `https://openapi.programming-hero.com/api/news/${id}`;
+    const modalBody = document.getElementById('modal-body');
+    console.log(url);
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+
+            if (data?.data?.length !== 0) {
+
+
+                modalBody.innerHTML = `
+            <div class="card p-3">
+                        <img src="${data?.data[0]?.image_url}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                        <h5 class="card-title">${data?.data[0]?.title}</h5>
+                        <div class="p-2 text-priary">
+                        <small>Author: ${data?.data[0]?.author?.name || 'not found'}</small><br>
+                        <small>Published: ${data?.data[0]?.author?.published_date || 'not found'}</small>
+                        </div>
+                        <h6>Views: ${data?.data[0]?.total_view || 'not found'
+                    }</h6 >
+                    <h6>Rating: ${data?.data[0]?.rating?.number}</h6>
+                <p class="card-text text-secondary"> <span class="fw-bold">Details: </span>${data?.data[0]?.details}</p>
+                        </div >
+                    </div >
+    `;
+            }
+            else {
+                modalBody.innerHTML = '<h1> No Data Found</h1>'
+            }
+        })
+        .catch(error => alert(error.message))
+
+
+}
+
