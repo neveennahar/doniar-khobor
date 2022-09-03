@@ -1,5 +1,7 @@
 const loading = document.getElementById('loading-spinner');
 const contentDiv = document.getElementById('content-area');
+const totalResult = document.getElementById('total-result');
+
 const defaultImage = 'https://preview.keenthemes.com/metronic-v4/theme_rtl/assets/pages/media/profile/profile_user.jpg';
 
 const toggleSpinner = state => {
@@ -13,7 +15,7 @@ const toggleSpinner = state => {
 }
 
 // Active Category link
-const loadCategorizedData = (element, categoryId) => {
+const loadCategorizedData = (element, categoryId, categoryName) => {
     const categoryLinks = document.getElementsByClassName('category-link');
     for (let link of categoryLinks) {
         link.classList.remove('text-primary')
@@ -23,16 +25,18 @@ const loadCategorizedData = (element, categoryId) => {
     toggleSpinner(true);
     fetch(url)
         .then(res => res.json())
-        .then(data => displayCategorizedData(data.data))
+        .then(data => displayCategorizedData(data.data, categoryName))
         .catch(error => console.log(error.message))
 }
 
 // Display Categorized Data
-const displayCategorizedData = data => {
+const displayCategorizedData = (data, categoryName) => {
+    totalResult.textContent = '';
+    totalResult.classList.remove('d-none')
+    totalResult.innerText = `${data.length} Results found for category ${categoryName}`
 
     data.sort((a, b) => b.total_view - a.total_view)
 
-    console.log(data)
     if (data.length !== 0) {
         contentDiv.textContent = '';
         data.forEach(item => {
@@ -130,6 +134,7 @@ const newsDetails = id => {
 
 }
 
+// 
 
 // Loading All Categories
 const loadCategories = () => {
@@ -147,7 +152,7 @@ const displayCategories = (data) => {
     data?.news_category?.map((category) => {
         const div = document.createElement('div');
         div.innerHTML = `
-    <span onclick = "loadCategorizedData(this,${category.category_id})" class="category-link cursor-pointer fw-bold"> ${category.category_name}</span>
+    <span onclick = "loadCategorizedData(this,${category.category_id},'${category.category_name}')" class="category-link cursor-pointer fw-bold"> ${category.category_name}</span>
         `
         categoriesMenu.appendChild(div)
     })

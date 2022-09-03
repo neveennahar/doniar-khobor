@@ -1,1 +1,3 @@
-https://github.com/Programming-Hero-Web-Course4/b6-news-portal-assignment-neveennahar
+github : https://github.com/Programming-Hero-Web-Course4/b6-news-portal-assignment-neveennahar
+
+live : https://doniar-khobor-neveen.netlify.app/index.html
